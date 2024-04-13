@@ -4,5 +4,5 @@ up:
 	docker-compose up 
 upb:
 	docker-compose up --build
-updownb:
+upd:
 	docker-compose down
