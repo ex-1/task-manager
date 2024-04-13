@@ -3,7 +3,7 @@ backend for task-manager
 
 
 ## Start app
-- make
+- > `make`
 
 ## Dependencies
 - download makefile
