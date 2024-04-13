@@ -4,6 +4,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+
+from app.config import settings
 from app.user.models import User
 from app.database import Base
 
@@ -11,7 +13,11 @@ from app.database import Base
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option("HOST", )
+config.set_main_option("HOST", settings.HOST)
+config.set_main_option("PORT", str(settings.PORT))
+config.set_main_option("P_USER", settings.P_USER)
+config.set_main_option("P_PASS", settings.P_PASS)
+config.set_main_option("P_DB", settings.P_DB)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
