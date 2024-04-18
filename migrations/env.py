@@ -13,8 +13,8 @@ from app.database import Base
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option("HOST", settings.HOST)
-config.set_main_option("PORT", str(settings.PORT))
+config.set_main_option("HOST", settings.P_HOST)
+config.set_main_option("PORT", str(settings.P_PORT))
 config.set_main_option("P_USER", settings.P_USER)
 config.set_main_option("P_PASS", settings.P_PASS)
 config.set_main_option("P_DB", settings.P_DB)
