@@ -8,6 +8,8 @@ DATABASE_URL = (
     f"{settings.P_ASYNC_DRIVER}://{settings.P_USER}:{settings.P_PASS}"
     f"@{settings.P_HOST}:{settings.P_PORT}/{settings.P_DB}"
 )
+
+
 engine = create_async_engine(DATABASE_URL)
 
 session_maker = async_sessionmaker(engine, expire_on_commit=False)

@@ -8,14 +8,19 @@ services:
       POSTGRES_USER: ${P_USER}
       POSTGRES_PASSWORD: ${P_PASS}
     ports:
-      - "5432:5432"
+      - "5433:5432"
+
+  alembic:
+    build:
+      context: .
+    command: sh -c "alembic upgrade head"
 
   back:
     build:
       context: .
     volumes:
       - .:/backend
-    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     restart: always
     depends_on:
       - postgres

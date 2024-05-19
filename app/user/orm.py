@@ -1,24 +1,38 @@
 from sqlalchemy import select
-from app.user.models import User
-from app.user.schemas import UserIn, UserOut
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.user.services import hash_password
+from app.user.models import User
+from app.user.schemas import UserIn, UserOut, CreatedUserMessage, UserOutWithPassword
 
-async def register_user(user: UserIn, session: AsyncSession) -> int:
-    new_user = User(**user.dict())
+
+async def create_user(user: UserIn, session: AsyncSession) -> CreatedUserMessage:
+    new_user = User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hash_password(user.password),
+    )
     session.add(new_user)
     await session.commit()
-    return new_user.id
+    return CreatedUserMessage()
 
 
-async def get_user_from_db(user_query: str | int, session: AsyncSession) -> UserOut | None:
-    if isinstance(user_query, str):
-        query_column = User.name
-    elif isinstance(user_query, int):
-        query_column = User.id
-    else:
-        # Handle unsupported types or invalid queries
-        raise ValueError("Unsupported user query type")
+async def get_user_by_username(
+    username: str, session: AsyncSession
+) -> UserOutWithPassword | None:
+    user = (
+        await session.execute(select(User).where(User.username == username))
+    ).scalar_one_or_none()
+    if user:
+        return UserOutWithPassword(**user.to_dict())
+    return None
 
-    user = (await session.execute(select(User).where(query_column == user_query))).scalar_one_or_none()
-    return user.to_dict() if user else None
+
+async def get_user_by_id(user_id: int,
+                         session: AsyncSession) -> UserOut | None:
+    user = (
+        await session.execute(select(User).where(User.id == user_id))
+    ).scalar_one_or_none()
+    if user:
+        return UserOut(**user.to_dict())
+    return None
