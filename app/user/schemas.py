@@ -7,13 +7,27 @@ class UserSchema(BaseModel):
 
 
 class UserIn(UserSchema):
-    email: str
+    name: str
+
+
+class PassportUserPut(BaseModel):
+    user_id: int
+    passport_number: str
+    issue_date: str
+    expiration_date: str
+    place_of_issue: str
+
+
+class UserPut(BaseModel):
+    username: str
+    name: str
+    passport_data: PassportUserPut
 
 
 class UserOut(BaseModel):
     username: str
     id: int
-    email: str
+    name: str
 
 
 class UserOutWithPassword(UserOut):

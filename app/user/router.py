@@ -12,7 +12,7 @@ from app.errors import (
 )
 from app.session import get_async_session
 from app.user.schemas import UserIn, UserOut, CreatedUserMessage
-from app.user.orm import create_user, get_user_by_username, get_user_by_id
+from app.user.orm import create_user, get_user_by_username, get_user_by_id, put_user
 
 user_router = APIRouter(prefix="/user", tags=["User"])
 user_templates_router = APIRouter(prefix="/user", tags=["User"])
@@ -35,6 +35,13 @@ async def user_register(
         raise get_error_user_not_create()
     return new_user
 
+
+@user_router.put("/change")
+async def user_register(
+    current_user: Annotated[UserOut, Depends(get_current_user)],
+    session: AsyncSession = Depends(get_async_session)
+):
+    put_user(current_user, session)
 
 @user_router.get("/profile/{user_id}", response_model=UserOut)
 async def user_profile(
