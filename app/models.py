@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import Integer, String, ForeignKey, TIMESTAMP, Date, Table, Column, Interval
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -22,10 +24,10 @@ class User(Base):
     projects = relationship('Project', back_populates='creator')
     tasks = relationship('Task', back_populates='performer')
     comments = relationship('Comment', back_populates='author')
-    passport_data = relationship('PassportData', uselist=False, back_populates='user')
+    passport_data = relationship('PassportData', uselist=False, back_populates='user', lazy='selectin')
     member_projects = relationship('Project', secondary=project_members_table, back_populates='members')
 
-    def to_dict(self):
+    async def to_dict(self):
         return {
             "id": self.id,
             "username": self.username,
@@ -141,8 +143,8 @@ class PassportData(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('Users.id'), unique=True, nullable=False)
     passport_number: Mapped[str] = mapped_column(String(20), unique=True, nullable=True)
-    issue_date: Mapped[str] = mapped_column(Date, nullable=True)
-    expiration_date: Mapped[str] = mapped_column(Date, nullable=True)
+    issue_date: Mapped[date] = mapped_column(Date, nullable=True)
+    expiration_date: Mapped[date] = mapped_column(Date, nullable=True)
     place_of_issue: Mapped[str] = mapped_column(String(255), nullable=True)
 
     user = relationship('User', back_populates='passport_data')

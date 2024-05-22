@@ -7,7 +7,6 @@ from alembic import context
 
 from app.config import settings
 from app.models import *
-from app.task.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel
 
 
@@ -11,11 +13,10 @@ class UserIn(UserSchema):
 
 
 class PassportUserPut(BaseModel):
-    user_id: int
-    passport_number: str
-    issue_date: str
-    expiration_date: str
-    place_of_issue: str
+    passport_number: str | None = None
+    issue_date: date | None = None
+    expiration_date: date | None = None
+    place_of_issue: str | None = None
 
 
 class UserPut(BaseModel):

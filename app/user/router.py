@@ -11,7 +11,7 @@ from app.errors import (
     get_error_user_not_create,
 )
 from app.session import get_async_session
-from app.user.schemas import UserIn, UserOut, CreatedUserMessage
+from app.user.schemas import UserIn, UserOut, CreatedUserMessage, UserPut
 from app.user.orm import create_user, get_user_by_username, get_user_by_id, put_user
 
 user_router = APIRouter(prefix="/user", tags=["User"])
@@ -39,16 +39,18 @@ async def user_register(
 @user_router.put("/change")
 async def user_register(
     current_user: Annotated[UserOut, Depends(get_current_user)],
-    session: AsyncSession = Depends(get_async_session)
+    changes_user: UserPut,
+    session: AsyncSession = Depends(get_async_session),
 ):
-    put_user(current_user, session)
+    return await put_user(current_user.id, changes_user, session)
 
-@user_router.get("/profile/{user_id}", response_model=UserOut)
+
+@user_router.get("/profile/{user_id}", response_model=UserPut)
 async def user_profile(
     # current_user: Annotated[UserOut, Depends(get_current_user)],
     user_id: int,
     session: AsyncSession = Depends(get_async_session),
-) -> UserOut:
+) -> UserPut:
     get_user = await get_user_by_id(user_id, session)
     if get_user is None:
         raise get_404_user_not_found()

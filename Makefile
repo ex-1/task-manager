@@ -6,3 +6,5 @@ upb:
 	docker-compose up --build
 upd:
 	docker-compose down
+stop:
+	docker-compose stop
