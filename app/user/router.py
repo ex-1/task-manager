@@ -15,7 +15,6 @@ from app.user.schemas import UserIn, UserOut, CreatedUserMessage, UserPut
 from app.user.orm import create_user, get_user_by_username, get_user_by_id, put_user
 
 user_router = APIRouter(prefix="/user", tags=["User"])
-user_templates_router = APIRouter(prefix="/user", tags=["User"])
 
 
 @user_router.get("/profile/me", response_model=UserOut)
