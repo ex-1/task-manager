@@ -20,9 +20,9 @@ class PassportUserPut(BaseModel):
 
 
 class UserPut(BaseModel):
-    username: str
-    name: str
-    passport_data: PassportUserPut
+    username: str | None = None
+    name: str | None = None
+    passport_data: PassportUserPut | None = None
 
 
 class UserOut(BaseModel):
