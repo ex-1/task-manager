@@ -42,6 +42,7 @@ async def user_register(
     changes_user: UserPut,
     session: AsyncSession = Depends(get_async_session),
 ):
+    print(changes_user.model_dump())
     return await put_user(current_user.id, changes_user, session)
 
 

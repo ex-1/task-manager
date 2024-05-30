@@ -31,20 +31,17 @@ async def put_user(user_id: int, user_input: UserPut, session: AsyncSession):
     if user_input.name:
         user.name = user_input.name
     # change passport
-    if not user_input.passport_data:
-        return user_id
-
-    if user.passport_data is None:
-        user.passport_data = PassportData()
-
-    if user_input.passport_data.passport_number:
-        user.passport_data.passport_number = user_input.passport_data.passport_number
-    if user_input.passport_data.issue_date:
-        user.passport_data.issue_date = user_input.passport_data.issue_date
-    if user_input.passport_data.expiration_date:
-        user.passport_data.expiration_date = user_input.passport_data.expiration_date
-    if user_input.passport_data.place_of_issue:
-        user.passport_data.place_of_issue = user_input.passport_data.place_of_issue
+    if user_input.passport_data:
+        if user.passport_data is None:
+            user.passport_data = PassportData()
+        if user_input.passport_data.passport_number:
+            user.passport_data.passport_number = user_input.passport_data.passport_number
+        if user_input.passport_data.issue_date:
+            user.passport_data.issue_date = user_input.passport_data.issue_date
+        if user_input.passport_data.expiration_date:
+            user.passport_data.expiration_date = user_input.passport_data.expiration_date
+        if user_input.passport_data.place_of_issue:
+            user.passport_data.place_of_issue = user_input.passport_data.place_of_issue
 
     await session.commit()
     return user_id
