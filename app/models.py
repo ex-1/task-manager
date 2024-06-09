@@ -71,7 +71,7 @@ class Task(Base):
     end_at: Mapped[str] = mapped_column(TIMESTAMP(timezone=True))
     performer_id: Mapped[int] = mapped_column(Integer, ForeignKey('Users.id'), nullable=False)
     project_id: Mapped[int] = mapped_column(Integer, ForeignKey('Projects.id'), nullable=False)
-    parent_task_id: Mapped[int] = mapped_column(Integer, ForeignKey('Tasks.id'))
+    parent_task_id: Mapped[int] = mapped_column(Integer, ForeignKey('Tasks.id'), nullable=True)
 
     performer = relationship('User', back_populates='tasks')
     project = relationship('Project', back_populates='tasks')
